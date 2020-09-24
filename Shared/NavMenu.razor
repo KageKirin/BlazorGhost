@@ -1,3 +1,5 @@
+@inject GhostService Ghost
+
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">BlazorGhost</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -28,7 +30,21 @@
             </NavLink>
         </li>
 
-
+        @if (Tags == null)
+        {
+            <li class="nav-item px-3">Loading categories</li>
+        }
+        else
+        {
+            @foreach(var tag in Tags)
+            {
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/tag/@tag.Slug">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @tag.Name
+                    </a>
+                </li>
+            }
+        }
     </ul>
 </div>
 
@@ -41,4 +57,15 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+#region ghost
+    public Ghost.Tag[] Tags;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tags = await Ghost.GetTagsAsync();
+    }
+#endregion
+
+
 }
