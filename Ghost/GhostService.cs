@@ -31,5 +31,10 @@ public class GhostService
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/pages/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
     }
+
+    public async Task<string> GetPostsJsonStringAsync()
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
+    }
 }
 }
