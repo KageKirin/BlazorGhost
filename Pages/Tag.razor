@@ -1,0 +1,27 @@
+@page "/tag/{Slug}"
+@inject GhostService Ghost
+
+<h1>Tag: @Slug</h1>
+
+@if (GhostPosts == null)
+{
+    <p><em>Loading posts...</em></p>
+}
+else
+{
+    @foreach(var p in GhostPosts)
+    {
+        <p>Post: @p.Title</p>
+    }
+}
+
+@code {
+    [Parameter]
+    public string Slug{ get; set; }
+
+    public Ghost.Post[] GhostPosts;
+    protected override async Task OnInitializedAsync()
+    {
+        GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
+    }
+}
