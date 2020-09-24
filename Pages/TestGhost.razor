@@ -29,15 +29,30 @@ else
     }
 }
 
+@if (GhostPosts == null)
+{
+    <p><em>Loading posts...</em></p>
+}
+else
+{
+    @foreach(var p in GhostPosts)
+    {
+        <p>Post: @p.Title</p>
+    }
+}
+
 @code {
     public Ghost.Tag[] GhostTags;
     public Ghost.Page[] GhostPages;
+    public Ghost.Post[] GhostPosts;
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine($"tags\n{await Ghost.GetTagsJsonStringAsync()}");
         Console.WriteLine($"pages\n{await Ghost.GetPagesJsonStringAsync()}");
+        Console.WriteLine($"posts\n{await Ghost.GetPostsJsonStringAsync()}");
 
         GhostTags = await Ghost.GetTagsAsync();
         GhostPages = await Ghost.GetPagesAsync();
+        GhostPosts = await Ghost.GetPostsAsync();
     }
 }
