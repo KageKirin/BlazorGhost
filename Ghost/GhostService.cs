@@ -22,6 +22,7 @@ public class GhostService
         return _httpClient.BaseAddress.ToString();
     }
 
+#region json_strings
     public async Task<string> GetTagsJsonStringAsync()
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
@@ -36,5 +37,20 @@ public class GhostService
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
     }
+#endregion
+
+#region tags
+    private Tag[] _tags;
+    public async Task<Tag[]> GetTagsAsync()
+    {
+        if (_tags == null)
+        {
+            _tags = (await _httpClient.GetFromJsonAsync<TagsRequest>($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}")).Tags;
+        }
+        return await Task.Run(() => _tags);
+    }
+#endregion
+
+
 }
 }
