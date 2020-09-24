@@ -51,6 +51,17 @@ public class GhostService
     }
 #endregion
 
+#region pages
+    private Page[] _pages;
+    public async Task<Page[]> GetPagesAsync()
+    {
+        if (_pages == null)
+        {
+            _pages = (await _httpClient.GetFromJsonAsync<PagesRequest>($"/ghost/api/v3/content/pages/?key={GhostSettings.RestApiKey}")).Pages;
+        }
+        return await Task.Run(() => _pages);
+    }
+#endregion
 
 }
 }
