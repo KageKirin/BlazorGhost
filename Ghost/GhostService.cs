@@ -63,5 +63,17 @@ public class GhostService
     }
 #endregion
 
+#region posts
+    private Post[] _posts;
+    public async Task<Post[]> GetPostsAsync()
+    {
+        if (_posts == null)
+        {
+            _posts = (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}")).Posts;
+        }
+        return await Task.Run(() => _posts);
+    }
+#endregion
+
 }
 }
