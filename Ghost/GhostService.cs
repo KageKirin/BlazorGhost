@@ -17,13 +17,14 @@ public class GhostService
         _httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Headers", "Access-Control-Allow-Origin,Content-Type");
     }
 
-    public async Task InitializeGhostServiceAsync()
-    {
-    }
-
     public string GetBaseUrl()
     {
         return _httpClient.BaseAddress.ToString();
+    }
+
+    public async Task<string> GetTagsJsonStringAsync()
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
     }
 
 }
