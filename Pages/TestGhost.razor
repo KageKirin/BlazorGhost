@@ -1,0 +1,43 @@
+@page "/ghost"
+@inject GhostService Ghost
+
+<h1>Ghost test</h1>
+
+<p>This component demonstrates fetching data from the ghost backend.</p>
+
+@if (GhostTags == null)
+{
+    <p><em>Loading tags...</em></p>
+}
+else
+{
+    @foreach(var t in GhostTags)
+    {
+        <p>Tag: @t.Name</p>
+    }
+}
+
+@if (GhostPages == null)
+{
+    <p><em>Loading pages...</em></p>
+}
+else
+{
+    @foreach(var p in GhostPages)
+    {
+        <p>Page: @p.Title</p>
+    }
+}
+
+@code {
+    public Ghost.Tag[] GhostTags;
+    public Ghost.Page[] GhostPages;
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"tags\n{await Ghost.GetTagsJsonStringAsync()}");
+        Console.WriteLine($"pages\n{await Ghost.GetPagesJsonStringAsync()}");
+
+        GhostTags = await Ghost.GetTagsAsync();
+        GhostPages = await Ghost.GetPagesAsync();
+    }
+}
