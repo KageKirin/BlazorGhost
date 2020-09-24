@@ -17,9 +17,22 @@ namespace BlazorGhost
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                );
+            });
 
-            await builder.Build().RunAsync();
+            /// create regular scoped HttpClient
+            builder.Services.AddScoped(client => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            var host = builder.Build();
+            await host.RunAsync();
         }
     }
 }
