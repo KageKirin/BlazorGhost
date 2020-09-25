@@ -47,13 +47,19 @@ else
     protected override async Task OnInitializedAsync()
     {
         //Console.WriteLine($"posts\n{await Ghost.GetPostsByTagJsonStringAsync(Slug)}");
-        GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
-        needRefresh = false;
+        if (needRefresh)
+        {
+            GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
+            needRefresh = false;
+        }
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
-        needRefresh = false;
+        if (needRefresh)
+        {
+            GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
+            needRefresh = false;
+        }
     }
 }

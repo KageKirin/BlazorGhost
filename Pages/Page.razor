@@ -39,13 +39,19 @@ else
     protected override async Task OnInitializedAsync()
     {
         //Console.WriteLine($"posts\n{await Ghost.GetPageBySlugJsonStringAsync(Slug)}");
-        GhostPage = await Ghost.GetPageBySlugAsync(Slug);
-        needRefresh = false;
+        if (needRefresh)
+        {
+            GhostPage = await Ghost.GetPageBySlugAsync(Slug);
+            needRefresh = false;
+        }
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        GhostPage = await Ghost.GetPageBySlugAsync(Slug);
-        needRefresh = false;
+        if (needRefresh)
+        {
+            GhostPage = await Ghost.GetPageBySlugAsync(Slug);
+            needRefresh = false;
+        }
     }
 }
