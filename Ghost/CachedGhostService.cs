@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Json;
@@ -45,6 +46,57 @@ public class CachedGhostService : GhostService
         }
         return await Task.Run(() => _posts);
     }
+
+    public override async Task<Post[]> GetPostsByTagAsync(string tagSlug)
+    {
+        if (_posts != null)
+        {
+            var selectedPosts = await Task.Run(() =>
+                from p in _posts
+                where p.Tags.Any(t => t.Slug == tagSlug)
+                select p);
+            return selectedPosts.ToArray();
+        }
+
+        return await base.GetPostsByTagAsync(tagSlug);
+    }
+
+    public override async Task<Post> GetPostBySlugAsync(string postSlug)
+    {
+        if (_posts != null)
+        {
+            var post = await Task.Run(() => (
+                from p in _posts
+                where p.Slug == postSlug
+                select p
+            ).First());
+            if (post != null)
+            {
+                return post;
+            }
+        }
+
+        return await base.GetPostBySlugAsync(postSlug);
+    }
+
+    public override async Task<Post> GetPostByIdAsync(string postId)
+    {
+        if (_posts != null)
+        {
+            var post = await Task.Run(() => (
+                from p in _posts
+                where p.Id == postId
+                select p
+            ).First());
+            if (post != null)
+            {
+                return post;
+            }
+        }
+
+        return await base.GetPostByIdAsync(postId);
+    }
+
 
 #endregion
 }
