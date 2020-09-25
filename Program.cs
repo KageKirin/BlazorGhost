@@ -36,7 +36,7 @@ namespace BlazorGhost
 
             /// create singleton GhostService
             /// singleton needed for data caching to work
-            builder.Services.AddSingleton<GhostService>(service => new GhostService(
+            builder.Services.AddSingleton<GhostService>(service => new CachedGhostService(
                 new HttpClient {
                     BaseAddress = new Uri(GhostSettings.RestApiLocation)
             }));
