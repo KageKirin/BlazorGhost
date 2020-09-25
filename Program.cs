@@ -30,12 +30,15 @@ namespace BlazorGhost
             });
 
             /// create regular scoped HttpClient
-            builder.Services.AddScoped(client => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(client => new HttpClient {
+                BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+            });
 
             /// create singleton GhostService
             /// singleton needed for data caching to work
-            builder.Services.AddSingleton<GhostService>(client => new GhostService(new HttpClient {
-                BaseAddress = new Uri(GhostSettings.RestApiLocation)
+            builder.Services.AddSingleton<GhostService>(service => new GhostService(
+                new HttpClient {
+                    BaseAddress = new Uri(GhostSettings.RestApiLocation)
             }));
 
             var host = builder.Build();
