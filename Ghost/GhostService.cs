@@ -43,6 +43,16 @@ public class GhostService
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=tags,authors&filter=tag:{tagSlug}")).Content.ReadAsStringAsync();
     }
 
+    public async Task<string> GetPostBySlugJsonStringAsync(string postSlug)
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/slug/{postSlug}/?key={GhostSettings.RestApiKey}&include=tags,authors")).Content.ReadAsStringAsync();
+    }
+
+    public async Task<string> GetPostByIdJsonStringAsync(string postId)
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/{postId}/?key={GhostSettings.RestApiKey}&include=tags,authors")).Content.ReadAsStringAsync();
+    }
+
     public async Task<string> GetPageBySlugJsonStringAsync(string pageSlug)
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/pages/slug/{pageSlug}/?key={GhostSettings.RestApiKey}&include=tags,authors")).Content.ReadAsStringAsync();
@@ -88,6 +98,17 @@ public class GhostService
     {
         return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=tags,authors&filter=tag:{tagSlug}")).Posts;
     }
+
+    public virtual async Task<Post> GetPostBySlugAsync(string postSlug)
+    {
+        return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/slug/{postSlug}/?key={GhostSettings.RestApiKey}")).Posts[0];
+    }
+
+    public virtual async Task<Post> GetPostByIdAsync(string postId)
+    {
+        return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/{postId}/?key={GhostSettings.RestApiKey}")).Posts[0];
+    }
+
 #endregion
 
 }
