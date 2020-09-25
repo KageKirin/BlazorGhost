@@ -47,6 +47,11 @@ public class GhostService
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/pages/slug/{pageSlug}/?key={GhostSettings.RestApiKey}&include=tags,authors")).Content.ReadAsStringAsync();
     }
+
+    public async Task<string> GetPageByIdJsonStringAsync(string pageId)
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/pages/{pageId}/?key={GhostSettings.RestApiKey}&include=tags,authors")).Content.ReadAsStringAsync();
+    }
 #endregion
 
 #region tags
@@ -65,6 +70,11 @@ public class GhostService
     public virtual async Task<Page> GetPageBySlugAsync(string pageSlug)
     {
         return (await _httpClient.GetFromJsonAsync<PagesRequest>($"/ghost/api/v3/content/pages/slug/{pageSlug}/?key={GhostSettings.RestApiKey}")).Pages[0];
+    }
+
+    public virtual async Task<Page> GetPageByIdAsync(string pageId)
+    {
+        return (await _httpClient.GetFromJsonAsync<PagesRequest>($"/ghost/api/v3/content/pages/{pageId}/?key={GhostSettings.RestApiKey}")).Pages[0];
     }
 #endregion
 
