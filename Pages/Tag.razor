@@ -3,7 +3,9 @@
 
 <h1>Tag: @Slug</h1>
 
-@if (GhostPosts == null)
+<h2>needs refresh: @needRefresh</h2>
+
+@if (GhostPosts == null || needRefresh)
 {
     <p><em>Loading posts...</em></p>
 }
@@ -11,17 +13,47 @@ else
 {
     @foreach(var p in GhostPosts)
     {
-        <p>Post: @p.Title</p>
+        <div>
+            <p>Post: @p.Title</p>
+            <p>@((MarkupString)p.Excerpt)</p>
+            <br />
+        </div>
     }
 }
 
 @code {
+    private string slug;
     [Parameter]
-    public string Slug{ get; set; }
+    public string Slug
+    {
+        get
+        {
+            return slug;
+        }
+
+        set
+        {
+            if (slug != null)
+            {
+                needRefresh = slug != value;
+            }
+            slug = value;
+        }
+    }
+
+    private bool needRefresh = true;
 
     public Ghost.Post[] GhostPosts;
     protected override async Task OnInitializedAsync()
     {
+        //Console.WriteLine($"posts\n{await Ghost.GetPostsByTagJsonStringAsync(Slug)}");
         GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
+        needRefresh = false;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        GhostPosts = await Ghost.GetPostsByTagAsync(Slug);
+        needRefresh = false;
     }
 }
