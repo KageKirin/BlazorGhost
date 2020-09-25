@@ -49,12 +49,13 @@ public class CachedGhostService : GhostService
 
     public override async Task<Post[]> GetPostsByTagAsync(string tagSlug)
     {
-        if (_posts != null)
+        var posts = await GetPostsAsync();
+        var selectedPosts = await Task.Run(() =>
+            from p in posts
+            where p.Tags.Any(t => t.Slug == tagSlug)
+            select p);
+        if (selectedPosts != null)
         {
-            var selectedPosts = await Task.Run(() =>
-                from p in _posts
-                where p.Tags.Any(t => t.Slug == tagSlug)
-                select p);
             return selectedPosts.ToArray();
         }
 
@@ -63,17 +64,15 @@ public class CachedGhostService : GhostService
 
     public override async Task<Post> GetPostBySlugAsync(string postSlug)
     {
-        if (_posts != null)
+        var posts = await GetPostsAsync();
+        var post = await Task.Run(() => (
+            from p in posts
+            where p.Slug == postSlug
+            select p
+        ).First());
+        if (post != null)
         {
-            var post = await Task.Run(() => (
-                from p in _posts
-                where p.Slug == postSlug
-                select p
-            ).First());
-            if (post != null)
-            {
-                return post;
-            }
+            return post;
         }
 
         return await base.GetPostBySlugAsync(postSlug);
@@ -81,17 +80,15 @@ public class CachedGhostService : GhostService
 
     public override async Task<Post> GetPostByIdAsync(string postId)
     {
-        if (_posts != null)
+        var posts = await GetPostsAsync();
+        var post = await Task.Run(() => (
+            from p in posts
+            where p.Id == postId
+            select p
+        ).First());
+        if (post != null)
         {
-            var post = await Task.Run(() => (
-                from p in _posts
-                where p.Id == postId
-                select p
-            ).First());
-            if (post != null)
-            {
-                return post;
-            }
+            return post;
         }
 
         return await base.GetPostByIdAsync(postId);
