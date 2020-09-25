@@ -34,6 +34,39 @@ public class CachedGhostService : GhostService
         }
         return await Task.Run(() => _pages);
     }
+
+    public override async Task<Page> GetPageBySlugAsync(string pageSlug)
+    {
+        var pages = await GetPagesAsync();
+        var page = await Task.Run(() => (
+            from p in pages
+            where p.Slug == pageSlug
+            select p
+        ).First());
+        if (page != null)
+        {
+            return page;
+        }
+
+        return await base.GetPageBySlugAsync(pageSlug);
+    }
+
+    public override async Task<Page> GetPageByIdAsync(string pageId)
+    {
+        var pages = await GetPagesAsync();
+        var page = await Task.Run(() => (
+            from p in pages
+            where p.Id == pageId
+            select p
+        ).First());
+        if (page != null)
+        {
+            return page;
+        }
+
+        return await base.GetPageByIdAsync(pageId);
+    }
+
 #endregion
 
 #region posts
