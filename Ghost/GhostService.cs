@@ -74,6 +74,13 @@ public class GhostService
     }
 #endregion
 
+#region settings
+    public virtual async Task<Settings> GetSettingsAsync()
+    {
+        return (await _httpClient.GetFromJsonAsync<SettingsRequest>($"/ghost/api/v3/content/settings/?key={GhostSettings.RestApiKey}")).Settings;
+    }
+#endregion
+
 #region authors
     public virtual async Task<Author[]> GetAuthorsAsync()
     {
