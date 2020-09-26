@@ -36,5 +36,9 @@ public class Post
 
     public Tag PrimaryTag {get;set;}
     public Tag[] Tags {get;set;}
+
+    public Author PrimaryAuthor {get;set;}
+    public Author[] Authors {get;set;}
+
 }
 }
