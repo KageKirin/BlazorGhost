@@ -43,6 +43,11 @@ public class GhostService
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=authors,tags")).Content.ReadAsStringAsync();
     }
 
+    public async Task<string> GetSettingsJsonStringAsync()
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/settings/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
+    }
+
     public async Task<string> GetPostsByTagJsonStringAsync(string tagSlug)
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=authors,tags&filter=tag:{tagSlug}")).Content.ReadAsStringAsync();
