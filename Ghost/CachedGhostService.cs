@@ -12,6 +12,18 @@ public class CachedGhostService : GhostService
     {
     }
 
+#region authors
+    private Author[] _authors;
+    public override async Task<Author[]> GetAuthorsAsync()
+    {
+        if (_authors == null)
+        {
+            _authors = await base.GetAuthorsAsync();
+        }
+        return await Task.Run(() => _authors);
+    }
+#endregion
+
 #region tags
     private Tag[] _tags;
     public override async Task<Tag[]> GetTagsAsync()
