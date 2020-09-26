@@ -74,6 +74,13 @@ public class GhostService
     }
 #endregion
 
+#region authors
+    public virtual async Task<Author[]> GetAuthorsAsync()
+    {
+        return (await _httpClient.GetFromJsonAsync<AuthorsRequest>($"/ghost/api/v3/content/authors/?key={GhostSettings.RestApiKey}&include=count.posts")).Authors;
+    }
+#endregion
+
 #region tags
     public virtual async Task<Tag[]> GetTagsAsync()
     {
