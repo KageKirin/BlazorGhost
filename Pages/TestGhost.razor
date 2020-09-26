@@ -13,7 +13,7 @@ else
 {
     @foreach(var a in GhostAuthors)
     {
-        <p>Author: @a.Name</p>
+        <p>Author: <a href="/author/@a.Slug">@a.Name</a></p>
     }
 }
 
@@ -25,7 +25,7 @@ else
 {
     @foreach(var t in GhostTags)
     {
-        <p>Tag: @t.Name</p>
+        <p>Tag: <a href="/tag/@t.Slug">@t.Name</a></p>
     }
 }
 
@@ -37,7 +37,7 @@ else
 {
     @foreach(var p in GhostPages)
     {
-        <p>Page: @p.Title</p>
+        <p>Page: <a href="/page/@p.Slug">@p.Title</a></p>
     }
 }
 
@@ -49,7 +49,7 @@ else
 {
     @foreach(var p in GhostPosts)
     {
-        <p>Post: @p.Title</p>
+        <p>Post: <a href="/post/@p.Slug">@p.Title</a></p>
     }
 }
 
