@@ -13,7 +13,7 @@ else
     <p>by
         @foreach (var a in GhostPost.Authors)
         {
-            <em>@a.Name</em>
+            <em><a href="/author/@a.Slug">@a.Name</a></em>
         }
     </p>
     <div id="page-contents">@((MarkupString)GhostPost.Html)</div>
