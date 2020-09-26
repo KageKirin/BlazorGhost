@@ -119,6 +119,21 @@ public class CachedGhostService : GhostService
         return await base.GetPostsByTagAsync(tagSlug);
     }
 
+    public override async Task<Post[]> GetPostsByAuthorAsync(string authorSlug)
+    {
+        var posts = await GetPostsAsync();
+        var selectedPosts = await Task.Run(() =>
+            from p in posts
+            where p.Authors.Any(a => a.Slug == authorSlug)
+            select p);
+        if (selectedPosts != null)
+        {
+            return selectedPosts.ToArray();
+        }
+
+        return await base.GetPostsByAuthorAsync(authorSlug);
+    }
+
     public override async Task<Post> GetPostBySlugAsync(string postSlug)
     {
         var posts = await GetPostsAsync();
