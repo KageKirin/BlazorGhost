@@ -60,6 +60,7 @@ else
     public Ghost.Post[] GhostPosts;
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine($"settings\n{await Ghost.GetSettingsJsonStringAsync()}");
         Console.WriteLine($"authors\n{await Ghost.GetAuthorsJsonStringAsync()}");
         Console.WriteLine($"tags\n{await Ghost.GetTagsJsonStringAsync()}");
         Console.WriteLine($"pages\n{await Ghost.GetPagesJsonStringAsync()}");
