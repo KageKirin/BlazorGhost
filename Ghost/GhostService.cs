@@ -25,7 +25,7 @@ public class GhostService
 #region json_strings
     public async Task<string> GetTagsJsonStringAsync()
     {
-        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}")).Content.ReadAsStringAsync();
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}&include=count.posts")).Content.ReadAsStringAsync();
     }
 
     public async Task<string> GetPagesJsonStringAsync()
@@ -67,7 +67,7 @@ public class GhostService
 #region tags
     public virtual async Task<Tag[]> GetTagsAsync()
     {
-        return (await _httpClient.GetFromJsonAsync<TagsRequest>($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}")).Tags;
+        return (await _httpClient.GetFromJsonAsync<TagsRequest>($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}&include=count.posts")).Tags;
     }
 #endregion
 
