@@ -1,0 +1,70 @@
+@page "/author/{Slug}"
+@inject GhostService Ghost
+
+<h1>Author: @Slug</h1>
+
+<h2>needs refresh: @needRefresh</h2>
+
+@if (GhostPosts == null || needRefresh)
+{
+    <p><em>Loading posts...</em></p>
+}
+else
+{
+    @foreach(var p in GhostPosts)
+    {
+        <div>
+            <p>Post: <a href="/post/@p.Slug">@p.Title</a> by
+            @foreach (var a in p.Authors)
+            {
+                <em><a href="/author/@a.Slug">@a.Name</a></em>
+            }
+            </p>
+            <p>@((MarkupString)p.Excerpt)</p>
+            <br />
+        </div>
+    }
+}
+
+@code {
+    private string slug;
+    [Parameter]
+    public string Slug
+    {
+        get
+        {
+            return slug;
+        }
+
+        set
+        {
+            if (slug != null)
+            {
+                needRefresh = slug != value;
+            }
+            slug = value;
+        }
+    }
+
+    private bool needRefresh = true;
+
+    public Ghost.Post[] GhostPosts;
+    protected override async Task OnInitializedAsync()
+    {
+        //Console.WriteLine($"posts\n{await Ghost.GetPostsByAuthorJsonStringAsync(Slug)}");
+        if (needRefresh)
+        {
+            GhostPosts = await Ghost.GetPostsByAuthorAsync(Slug);
+            needRefresh = false;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (needRefresh)
+        {
+            GhostPosts = await Ghost.GetPostsByAuthorAsync(Slug);
+            needRefresh = false;
+        }
+    }
+}
