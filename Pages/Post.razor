@@ -10,6 +10,12 @@
 else
 {
     <p>Post: @GhostPost.Title</p>
+    <p>by
+        @foreach (var a in GhostPost.Authors)
+        {
+            <em>@a.Name</em>
+        }
+    </p>
     <div id="page-contents">@((MarkupString)GhostPost.Html)</div>
 }
 
