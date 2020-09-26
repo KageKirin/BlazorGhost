@@ -14,7 +14,12 @@ else
     @foreach(var p in GhostPosts)
     {
         <div>
-            <p>Post: <a href="/post/@p.Slug">@p.Title</a></p>
+            <p>Post: <a href="/post/@p.Slug">@p.Title</a> by
+            @foreach (var a in p.Authors)
+            {
+                <em>@a.Name</em>
+            }
+            </p>
             <p>@((MarkupString)p.Excerpt)</p>
             <br />
         </div>
