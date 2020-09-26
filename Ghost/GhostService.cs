@@ -128,6 +128,11 @@ public class GhostService
         return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=authors,tags&filter=tag:{tagSlug}")).Posts;
     }
 
+    public virtual async Task<Post[]> GetPostsByAuthorAsync(string authorSlug)
+    {
+        return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/?key={GhostSettings.RestApiKey}&include=authors,tags&filter=author:{authorSlug}")).Posts;
+    }
+
     public virtual async Task<Post> GetPostBySlugAsync(string postSlug)
     {
         return (await _httpClient.GetFromJsonAsync<PostsRequest>($"/ghost/api/v3/content/posts/slug/{postSlug}/?key={GhostSettings.RestApiKey}&include=authors,tags")).Posts[0];
