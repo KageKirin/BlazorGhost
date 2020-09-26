@@ -5,6 +5,18 @@
 
 <p>This component demonstrates fetching data from the ghost backend.</p>
 
+@if (GhostAuthors == null)
+{
+    <p><em>Loading authors...</em></p>
+}
+else
+{
+    @foreach(var a in GhostAuthors)
+    {
+        <p>Author: @a.Name</p>
+    }
+}
+
 @if (GhostTags == null)
 {
     <p><em>Loading tags...</em></p>
@@ -42,15 +54,18 @@ else
 }
 
 @code {
+    public Ghost.Author[] GhostAuthors;
     public Ghost.Tag[] GhostTags;
     public Ghost.Page[] GhostPages;
     public Ghost.Post[] GhostPosts;
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine($"authors\n{await Ghost.GetAuthorsJsonStringAsync()}");
         Console.WriteLine($"tags\n{await Ghost.GetTagsJsonStringAsync()}");
         Console.WriteLine($"pages\n{await Ghost.GetPagesJsonStringAsync()}");
         Console.WriteLine($"posts\n{await Ghost.GetPostsJsonStringAsync()}");
 
+        GhostAuthors = await Ghost.GetAuthorsAsync();
         GhostTags = await Ghost.GetTagsAsync();
         GhostPages = await Ghost.GetPagesAsync();
         GhostPosts = await Ghost.GetPostsAsync();
