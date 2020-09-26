@@ -17,7 +17,7 @@ else
             <p>Post: <a href="/post/@p.Slug">@p.Title</a> by
             @foreach (var a in p.Authors)
             {
-                <em>@a.Name</em>
+                <em><a href="/author/@a.Slug">@a.Name</a></em>
             }
             </p>
             <p>@((MarkupString)p.Excerpt)</p>
