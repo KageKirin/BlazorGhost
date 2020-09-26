@@ -12,6 +12,18 @@ public class CachedGhostService : GhostService
     {
     }
 
+#region settings
+    private Settings _settings;
+    public override async Task<Settings> GetSettingsAsync()
+    {
+        if (_settings == null)
+        {
+            _settings = await base.GetSettingsAsync();
+        }
+        return await Task.Run(() => _settings);
+    }
+#endregion
+
 #region authors
     private Author[] _authors;
     public override async Task<Author[]> GetAuthorsAsync()
