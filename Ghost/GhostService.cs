@@ -23,6 +23,11 @@ public class GhostService
     }
 
 #region json_strings
+    public async Task<string> GetAuthorsJsonStringAsync()
+    {
+        return await(await _httpClient.GetAsync($"/ghost/api/v3/content/authors/?key={GhostSettings.RestApiKey}&include=count.posts")).Content.ReadAsStringAsync();
+    }
+
     public async Task<string> GetTagsJsonStringAsync()
     {
         return await(await _httpClient.GetAsync($"/ghost/api/v3/content/tags/?key={GhostSettings.RestApiKey}&include=count.posts")).Content.ReadAsStringAsync();
