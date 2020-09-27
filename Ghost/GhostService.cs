@@ -27,6 +27,11 @@ public class GhostService
         await Task.Run(() => null);
     }
 
+    public virtual async Task RefreshAsync()
+    {
+        await Task.Run(() => null);
+    }
+
 #region json_strings
     public async Task<string> GetAuthorsJsonStringAsync()
     {
