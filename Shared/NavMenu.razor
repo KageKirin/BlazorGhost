@@ -89,6 +89,11 @@
             }
         }
 
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/refresh">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Refresh
+            </NavLink>
+        </li>
     </ul>
 </div>
 
@@ -115,5 +120,12 @@
         Pages = await Ghost.GetPagesAsync();
     }
 
+    protected async Task OnClick_Refresh()
+    {
+        await Ghost.RefreshAsync();
+        Settings = await Ghost.GetSettingsAsync();
+        Tags = await Ghost.GetTagsAsync();
+        Pages = await Ghost.GetPagesAsync();
+    }
 #endregion
 }
