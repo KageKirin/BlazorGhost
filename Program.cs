@@ -43,6 +43,7 @@ namespace BlazorGhost
 
             var host = builder.Build();
             var ghostService = host.Services.GetRequiredService<GhostService>();
+            await ghostService.InitializeAsync();
 
             await host.RunAsync();
         }
