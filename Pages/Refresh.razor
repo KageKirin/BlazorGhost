@@ -1,0 +1,13 @@
+﻿@page "/refresh"
+@inject GhostService Ghost
+
+<h1>Refresh app cache</h1>
+
+<button class="btn btn-primary" @onclick="RefreshAsync">Refresh data</button>
+
+@code {
+    private async Task RefreshAsync()
+    {
+        await Ghost.RefreshAsync();
+    }
+}
