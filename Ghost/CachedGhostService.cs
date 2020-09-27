@@ -12,6 +12,15 @@ public class CachedGhostService : GhostService
     {
     }
 
+    public override async Task InitializeAsync()
+    {
+        await GetSettingsAsync();
+        await GetAuthorsAsync();
+        await GetTagsAsync();
+        await GetPagesAsync();
+        await GetPostsAsync();
+    }
+
 #region settings
     private Settings _settings;
     public override async Task<Settings> GetSettingsAsync()
