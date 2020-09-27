@@ -61,6 +61,34 @@
                 </li>
             }
         }
+
+        @if (Settings == null)
+        {
+            <li class="nav-item px-3">Loading navigation</li>
+        }
+        else
+        {
+            @foreach(var nav in Settings.Navigation)
+            {
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="@nav.Url">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @nav.Label
+                    </a>
+                </li>
+            }
+            @if (Settings.SecondaryNavigation != null)
+            {
+                @foreach(var nav in Settings.SecondaryNavigation)
+                {
+                    <li class="nav-item px-3">
+                        <a class="nav-link" href="@nav.Url">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> @nav.Label
+                        </a>
+                    </li>
+                }
+            }
+        }
+
     </ul>
 </div>
 
@@ -75,13 +103,17 @@
     }
 
 #region ghost
+    public Ghost.Settings Settings;
     public Ghost.Tag[] Tags;
     public Ghost.Page[] Pages;
 
     protected override async Task OnInitializedAsync()
     {
+        await Ghost.InitializeAsync();
+        Settings = await Ghost.GetSettingsAsync();
         Tags = await Ghost.GetTagsAsync();
         Pages = await Ghost.GetPagesAsync();
     }
+
 #endregion
 }
