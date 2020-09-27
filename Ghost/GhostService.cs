@@ -22,6 +22,11 @@ public class GhostService
         return _httpClient.BaseAddress.ToString();
     }
 
+    public virtual async Task InitializeAsync()
+    {
+        await Task.Run(() => null);
+    }
+
 #region json_strings
     public async Task<string> GetAuthorsJsonStringAsync()
     {
